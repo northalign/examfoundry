@@ -1,20 +1,26 @@
 export type BrandMode = "stonyhurst" | "neutral" | "custom";
 
-export type QuestionType =
-  | "set_work_short_answer_listening"
-  | "dictation"
-  | "unfamiliar_listening_essay"
-  | "set_work_essay_option";
+export const QuestionType = {
+  SetWorkShortAnswerListening: "set_work_short_answer_listening",
+  Dictation: "dictation",
+  UnfamiliarListeningEssay: "unfamiliar_listening_essay",
+  SetWorkEssayOption: "set_work_essay_option",
+} as const;
+
+export type QuestionType = (typeof QuestionType)[keyof typeof QuestionType];
 
 export type AssetType = "audio" | "score" | "image" | "document";
 
-export type CopyrightStatus =
-  | "synthetic"
-  | "user_provided"
-  | "licensed_internal"
-  | "public_domain"
-  | "unknown"
-  | "not_for_distribution";
+export const CopyrightStatus = {
+  Synthetic: "synthetic",
+  UserProvided: "user_provided",
+  LicensedInternal: "licensed_internal",
+  PublicDomain: "public_domain",
+  Unknown: "unknown",
+  NotForDistribution: "not_for_distribution",
+} as const;
+
+export type CopyrightStatus = (typeof CopyrightStatus)[keyof typeof CopyrightStatus];
 
 export type PaperSlotKey = "q1" | "q2" | "q3" | "q4" | "q5" | "q6a" | "q6b" | "q6c" | "q6d";
 

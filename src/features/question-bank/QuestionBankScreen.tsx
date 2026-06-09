@@ -1,17 +1,18 @@
 import { BookOpen, FileAudio, FileText, Search } from "lucide-react";
 import { useMemo, useState } from "react";
-import type { DataPack, QuestionType } from "../../domain/exam/types";
+import { QuestionType } from "../../domain/exam/types";
+import type { DataPack, QuestionType as QuestionTypeValue } from "../../domain/exam/types";
 
-const typeLabels: Record<QuestionType, string> = {
-  set_work_short_answer_listening: "Set work short-answer listening",
-  dictation: "Dictation",
-  unfamiliar_listening_essay: "Unfamiliar listening essay",
-  set_work_essay_option: "Set work essay option",
+const typeLabels: Record<QuestionTypeValue, string> = {
+  [QuestionType.SetWorkShortAnswerListening]: "Set work short-answer listening",
+  [QuestionType.Dictation]: "Dictation",
+  [QuestionType.UnfamiliarListeningEssay]: "Unfamiliar listening essay",
+  [QuestionType.SetWorkEssayOption]: "Set work essay option",
 };
 
 export const QuestionBankScreen = ({ dataPack }: { dataPack: DataPack }) => {
   const [search, setSearch] = useState("");
-  const [typeFilter, setTypeFilter] = useState<QuestionType | "all">("all");
+  const [typeFilter, setTypeFilter] = useState<QuestionTypeValue | "all">("all");
   const [areaFilter, setAreaFilter] = useState<string>("all");
 
   const areaById = new Map(dataPack.areasOfStudy.map((area) => [area.id, area]));
@@ -51,7 +52,7 @@ export const QuestionBankScreen = ({ dataPack }: { dataPack: DataPack }) => {
         </label>
         <select
           className="field-control compact"
-          onChange={(event) => setTypeFilter(event.target.value as QuestionType | "all")}
+          onChange={(event) => setTypeFilter(event.target.value as QuestionTypeValue | "all")}
           value={typeFilter}
         >
           <option value="all">All types</option>

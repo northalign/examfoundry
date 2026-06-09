@@ -1,4 +1,5 @@
 import { AlertTriangle, CheckCircle2, CircleAlert, FilePenLine, Info, Music2 } from "lucide-react";
+import { QuestionType } from "../../domain/exam/types";
 import type {
   AreaOfStudy,
   DataPack,
@@ -6,7 +7,7 @@ import type {
   PaperSlotKey,
   PaperTemplate,
   Question,
-  QuestionType,
+  QuestionType as QuestionTypeValue,
   SetWork,
   ValidationState,
 } from "../../domain/exam/types";
@@ -20,11 +21,11 @@ interface PaperBuilderScreenProps {
   onSlotChange: (slotKey: PaperSlotKey, questionId: string) => void;
 }
 
-const questionTypeLabels: Record<QuestionType, string> = {
-  set_work_short_answer_listening: "Set work short-answer listening",
-  dictation: "Dictation",
-  unfamiliar_listening_essay: "Unfamiliar listening essay",
-  set_work_essay_option: "Set work essay options",
+const questionTypeLabels: Record<QuestionTypeValue, string> = {
+  [QuestionType.SetWorkShortAnswerListening]: "Set work short-answer listening",
+  [QuestionType.Dictation]: "Dictation",
+  [QuestionType.UnfamiliarListeningEssay]: "Unfamiliar listening essay",
+  [QuestionType.SetWorkEssayOption]: "Set work essay options",
 };
 
 const q1ToQ3Slots: Array<{ slotKey: PaperSlotKey; label: string; number: string }> = [
@@ -55,7 +56,7 @@ export const PaperBuilderScreen = ({
   const setWorkById = new Map(dataPack.setWorks.map((setWork) => [setWork.id, setWork]));
   const questionById = new Map(dataPack.questions.map((question) => [question.id, question]));
 
-  const questionsByType = (questionType: QuestionType) =>
+  const questionsByType = (questionType: QuestionTypeValue) =>
     dataPack.questions.filter(
       (question) => question.enabled && !question.archived && question.questionType === questionType,
     );
@@ -92,12 +93,12 @@ export const PaperBuilderScreen = ({
           {q1ToQ3Slots.map(({ slotKey, label, number }) => (
             <QuestionCard
               areaById={areaById}
-              badgeLabel={questionTypeLabels.set_work_short_answer_listening}
+              badgeLabel={questionTypeLabels[QuestionType.SetWorkShortAnswerListening]}
               draft={draft}
               key={slotKey}
               number={number}
               onSlotChange={onSlotChange}
-              options={questionsByType("set_work_short_answer_listening")}
+              options={questionsByType(QuestionType.SetWorkShortAnswerListening)}
               questionById={questionById}
               setWorkById={setWorkById}
               slotKey={slotKey}
@@ -141,12 +142,12 @@ export const PaperBuilderScreen = ({
 
           <QuestionCard
             areaById={areaById}
-            badgeLabel={questionTypeLabels.dictation}
+            badgeLabel={questionTypeLabels[QuestionType.Dictation]}
             draft={draft}
             fixedMarksLabel="8 marks fixed"
             number="4"
             onSlotChange={onSlotChange}
-            options={questionsByType("dictation")}
+            options={questionsByType(QuestionType.Dictation)}
             questionById={questionById}
             setWorkById={setWorkById}
             slotKey="q4"
@@ -155,12 +156,12 @@ export const PaperBuilderScreen = ({
 
           <QuestionCard
             areaById={areaById}
-            badgeLabel={questionTypeLabels.unfamiliar_listening_essay}
+            badgeLabel={questionTypeLabels[QuestionType.UnfamiliarListeningEssay]}
             draft={draft}
             fixedMarksLabel="20 marks fixed"
             number="5"
             onSlotChange={onSlotChange}
-            options={questionsByType("unfamiliar_listening_essay")}
+            options={questionsByType(QuestionType.UnfamiliarListeningEssay)}
             questionById={questionById}
             setWorkById={setWorkById}
             slotKey="q5"
@@ -172,7 +173,7 @@ export const PaperBuilderScreen = ({
             <div className="question-card-body">
               <div className="question-card-heading">
                 <strong>Question 6</strong>
-                <span className="type-badge">{questionTypeLabels.set_work_essay_option}</span>
+                <span className="type-badge">{questionTypeLabels[QuestionType.SetWorkEssayOption]}</span>
                 <span className="mark-badge">30 marks fixed</span>
               </div>
               <div className="q6-options">
@@ -195,7 +196,7 @@ export const PaperBuilderScreen = ({
                         value={draft.selectedQuestionIdsBySlot[slotKey] ?? ""}
                       >
                         <option value="">Select essay option</option>
-                        {questionsByType("set_work_essay_option").map((question) => (
+                        {questionsByType(QuestionType.SetWorkEssayOption).map((question) => (
                           <option key={question.id} value={question.id}>
                             {question.title}
                           </option>

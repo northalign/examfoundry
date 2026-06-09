@@ -1,3 +1,4 @@
+import { QuestionType } from "./types";
 import type { PaperSlot, PaperTemplate } from "./types";
 
 const templateId = "template_edexcel_a_level_music_9mu0_03_v0_9";
@@ -40,15 +41,15 @@ export const edexcelALevelMusicTemplate: PaperTemplate = {
     "q6_no_duplicate_set_works",
   ],
   slots: [
-    slot("q1", "Question 1", 1, ["set_work_short_answer_listening"], 1),
-    slot("q2", "Question 2", 2, ["set_work_short_answer_listening"], 2),
-    slot("q3", "Question 3", 3, ["set_work_short_answer_listening"], 3),
-    slot("q4", "Question 4", 4, ["dictation"], 4, 8),
-    slot("q5", "Question 5", 5, ["unfamiliar_listening_essay"], 5, 20),
-    slot("q6a", "Question 6 option A", 6, ["set_work_essay_option"], 6, 30, "A"),
-    slot("q6b", "Question 6 option B", 6, ["set_work_essay_option"], 7, 30, "B"),
-    slot("q6c", "Question 6 option C", 6, ["set_work_essay_option"], 8, 30, "C"),
-    slot("q6d", "Question 6 option D", 6, ["set_work_essay_option"], 9, 30, "D"),
+    slot("q1", "Question 1", 1, [QuestionType.SetWorkShortAnswerListening], 1),
+    slot("q2", "Question 2", 2, [QuestionType.SetWorkShortAnswerListening], 2),
+    slot("q3", "Question 3", 3, [QuestionType.SetWorkShortAnswerListening], 3),
+    slot("q4", "Question 4", 4, [QuestionType.Dictation], 4, 8),
+    slot("q5", "Question 5", 5, [QuestionType.UnfamiliarListeningEssay], 5, 20),
+    slot("q6a", "Question 6 option A", 6, [QuestionType.SetWorkEssayOption], 6, 30, "A"),
+    slot("q6b", "Question 6 option B", 6, [QuestionType.SetWorkEssayOption], 7, 30, "B"),
+    slot("q6c", "Question 6 option C", 6, [QuestionType.SetWorkEssayOption], 8, 30, "C"),
+    slot("q6d", "Question 6 option D", 6, [QuestionType.SetWorkEssayOption], 9, 30, "D"),
   ],
 };
 
