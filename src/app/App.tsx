@@ -1,8 +1,20 @@
 import { useMemo, useState } from "react";
 import { AppShell } from "../components/layout/AppShell";
 import { brandProfiles } from "../domain/branding/brandProfiles";
+import {
+  archiveQuestionInDataPack,
+  duplicateQuestionInDataPack,
+  saveQuestionToDataPack,
+} from "../domain/data-packs/questionMutations";
 import { edexcelALevelMusicTemplate } from "../domain/exam/template";
-import type { BrandMode, PaperDraft, PaperSlotKey, SubQuestion } from "../domain/exam/types";
+import type {
+  BrandMode,
+  DataPack,
+  PaperDraft,
+  PaperSlotKey,
+  Question,
+  SubQuestion,
+} from "../domain/exam/types";
 import { validateEdexcelALevelMusicPaper } from "../domain/validation/edexcelALevelMusic";
 import { AudioLibraryScreen } from "../features/audio-library/AudioLibraryScreen";
 import { DataPacksScreen } from "../features/data-packs/DataPacksScreen";
@@ -35,6 +47,7 @@ const screenLabels: Record<ScreenId, string> = {
 export const App = () => {
   const [activeScreen, setActiveScreen] = useState<ScreenId>("paper-builder");
   const [brandMode, setBrandMode] = useState<BrandMode>("stonyhurst");
+  const [dataPack, setDataPack] = useState<DataPack>(() => cloneDataPack(edexcelMusicDataPack));
   const [draft, setDraft] = useState<PaperDraft>(() => createInitialPaperDraft());
 
   const activeBrand = useMemo(() => {
@@ -51,10 +64,10 @@ export const App = () => {
       validateEdexcelALevelMusicPaper({
         draft,
         template: edexcelALevelMusicTemplate,
-        questions: edexcelMusicDataPack.questions,
-        assets: edexcelMusicDataPack.assets,
+        questions: dataPack.questions,
+        assets: dataPack.assets,
       }),
-    [draft],
+    [dataPack.assets, dataPack.questions, draft],
   );
 
   const handleSlotChange = (slotKey: PaperSlotKey, questionId: string) => {
@@ -79,6 +92,23 @@ export const App = () => {
     }));
   };
 
+  const handleQuestionSave = (question: Question) => {
+    setDataPack((currentDataPack) => saveQuestionToDataPack(currentDataPack, question));
+  };
+
+  const handleQuestionDuplicate = (questionId: string) => {
+    const duplicateQuestionId = createDuplicateQuestionId(questionId);
+    setDataPack((currentDataPack) =>
+      duplicateQuestionInDataPack(currentDataPack, questionId, duplicateQuestionId),
+    );
+
+    return duplicateQuestionId;
+  };
+
+  const handleQuestionArchive = (questionId: string) => {
+    setDataPack((currentDataPack) => archiveQuestionInDataPack(currentDataPack, questionId));
+  };
+
   const handleBrandModeChange = (nextMode: BrandMode) => {
     setBrandMode(nextMode);
     const nextBrand = brandProfiles.find((brandProfile) => brandProfile.mode === nextMode);
@@ -96,7 +126,7 @@ export const App = () => {
       case "paper-builder":
         return (
           <PaperBuilderScreen
-            dataPack={edexcelMusicDataPack}
+            dataPack={dataPack}
             draft={draft}
             template={edexcelALevelMusicTemplate}
             validationState={validationState}
@@ -105,21 +135,28 @@ export const App = () => {
           />
         );
       case "question-bank":
-        return <QuestionBankScreen dataPack={edexcelMusicDataPack} />;
+        return <QuestionBankScreen dataPack={dataPack} />;
       case "question-editor":
-        return <QuestionEditorScreen dataPack={edexcelMusicDataPack} />;
+        return (
+          <QuestionEditorScreen
+            dataPack={dataPack}
+            onQuestionArchive={handleQuestionArchive}
+            onQuestionDuplicate={handleQuestionDuplicate}
+            onQuestionSave={handleQuestionSave}
+          />
+        );
       case "question-writer":
         return <QuestionWriterScreen />;
       case "audio-library":
-        return <AudioLibraryScreen dataPack={edexcelMusicDataPack} />;
+        return <AudioLibraryScreen dataPack={dataPack} />;
       case "data-packs":
-        return <DataPacksScreen dataPack={edexcelMusicDataPack} />;
+        return <DataPacksScreen dataPack={dataPack} />;
       case "settings":
         return (
           <SettingsScreen
             activeBrand={activeBrand}
             brandMode={brandMode}
-            dataPack={edexcelMusicDataPack}
+            dataPack={dataPack}
             onBrandModeChange={handleBrandModeChange}
           />
         );
@@ -141,3 +178,8 @@ export const App = () => {
     </AppShell>
   );
 };
+
+const cloneDataPack = (dataPack: DataPack): DataPack => JSON.parse(JSON.stringify(dataPack)) as DataPack;
+
+const createDuplicateQuestionId = (questionId: string) =>
+  `${questionId}_copy_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;

@@ -570,6 +570,12 @@ textarea.field-control {
   border: 1px solid #d6d0c5;
 }
 
+.metadata-pill.warning {
+  color: #895d15;
+  background: #fff7e9;
+  border-color: #e8c990;
+}
+
 .subquestion-button {
   margin-left: auto;
   color: var(--brand-primary);
@@ -1048,6 +1054,17 @@ textarea.field-control {
   min-width: 0;
 }
 
+.editor-filter-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.editor-filter-grid .field-control {
+  width: 100%;
+}
+
 .question-list {
   margin: 14px -16px 0;
 }
@@ -1075,6 +1092,17 @@ textarea.field-control {
   font-size: 12px;
 }
 
+.archived-label {
+  justify-self: start;
+  padding: 2px 7px;
+  color: #895d15;
+  background: #fff7e9;
+  border: 1px solid #e8c990;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
 .editor-form-panel {
   padding: 28px;
 }
@@ -1088,6 +1116,74 @@ textarea.field-control {
 
 .editor-form .field-control {
   background: #eeeae2;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+  gap: 9px;
+  color: #39362f;
+  font-weight: 700;
+}
+
+.checkbox-row input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--brand-accent);
+}
+
+.editor-form-section {
+  padding: 14px;
+  background: #fbf8f3;
+  border: 1px solid #e3dbcf;
+  border-radius: 6px;
+}
+
+.editor-form-section h2 {
+  margin-bottom: 10px;
+  color: var(--brand-primary);
+  font-size: 15px;
+}
+
+.asset-metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.asset-metadata-card {
+  padding: 12px;
+  background: #f1ede6;
+  border: 1px solid #d8d0c3;
+  border-radius: 6px;
+}
+
+.asset-metadata-card span {
+  display: inline-block;
+  margin-top: 5px;
+  color: #6c665d;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.asset-metadata-card p {
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+}
+
+.editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.danger-text {
+  color: #8e2636;
 }
 
 .form-save {
