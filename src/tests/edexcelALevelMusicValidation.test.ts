@@ -30,7 +30,9 @@ describe("Edexcel A level Music validation", () => {
     const result = validate(draft);
 
     expect(result.isValid).toBe(false);
-    expect(result.blockingErrors.map((error) => error.id)).toContain("missing_q4");
+    const missingSlotError = result.blockingErrors.find((error) => error.id === "missing_q4");
+    expect(missingSlotError?.label).toBe("Question 4 is empty");
+    expect(missingSlotError?.detail).toBe("Select a question before preview or export.");
   });
 
   it("blocks export when Questions 1 to 3 do not total 42", () => {
@@ -66,7 +68,10 @@ describe("Edexcel A level Music validation", () => {
 
     expect(result.isValid).toBe(false);
     expect(result.marksSummary.q1ToQ3Total).toBe(41);
-    expect(result.blockingErrors.map((error) => error.id)).toContain("q1_to_q3_total");
+    const totalError = result.blockingErrors.find((error) => error.id === "q1_to_q3_total");
+    expect(totalError?.label).toBe("Questions 1 to 3 total 41 / 42");
+    expect(totalError?.detail).toBe("Add 1 mark or edit sub-questions.");
+    expect(result.exportReadiness.reasons).toContain("Questions 1 to 3 total 41 / 42");
   });
 
   it("blocks export when Questions 1 to 3 duplicate an Area of Study", () => {
@@ -76,7 +81,36 @@ describe("Edexcel A level Music validation", () => {
     const result = validate(draft);
 
     expect(result.isValid).toBe(false);
-    expect(result.blockingErrors.map((error) => error.id)).toContain("q1_to_q3_areas");
+    const areaError = result.blockingErrors.find((error) => error.id === "q1_to_q3_areas");
+    expect(areaError?.label).toBe("Questions 1 to 3 must use three different Areas of Study");
+  });
+
+  it("blocks export when Question 4 is not fixed at 8 marks", () => {
+    const draft = createInitialPaperDraft();
+    const questions = edexcelMusicDataPack.questions.map((question) =>
+      question.id === "q4_synthetic_dictation_8" ? { ...question, marks: 7 } : question,
+    );
+
+    const result = validate(draft, questions);
+
+    expect(result.isValid).toBe(false);
+    const q4Error = result.blockingErrors.find((error) => error.id === "q4_fixed_marks");
+    expect(q4Error?.label).toBe("Question 4 must be 8 marks");
+    expect(q4Error?.detail).toBe("All dictation questions are fixed at 8 marks in v0.9.");
+  });
+
+  it("blocks export when Question 5 is not fixed at 20 marks", () => {
+    const draft = createInitialPaperDraft();
+    const questions = edexcelMusicDataPack.questions.map((question) =>
+      question.id === "q5_synthetic_unfamiliar_20" ? { ...question, marks: 19 } : question,
+    );
+
+    const result = validate(draft, questions);
+
+    expect(result.isValid).toBe(false);
+    const q5Error = result.blockingErrors.find((error) => error.id === "q5_fixed_marks");
+    expect(q5Error?.label).toBe("Question 5 must be 20 marks");
+    expect(q5Error?.detail).toBe("Unfamiliar listening essay questions are fixed at 20 marks in v0.9.");
   });
 
   it("blocks export when Question 6 options are incomplete", () => {
@@ -87,7 +121,9 @@ describe("Edexcel A level Music validation", () => {
 
     expect(result.isValid).toBe(false);
     expect(result.blockingErrors.map((error) => error.id)).toContain("missing_q6d");
-    expect(result.blockingErrors.map((error) => error.id)).toContain("q6_options_complete");
+    const q6CompleteError = result.blockingErrors.find((error) => error.id === "q6_options_complete");
+    expect(q6CompleteError?.label).toBe("Question 6 needs four essay options");
+    expect(q6CompleteError?.detail).toBe("Select options A, B, C, and D.");
   });
 
   it("blocks export when Question 6 options duplicate a set work", () => {
@@ -98,6 +134,8 @@ describe("Edexcel A level Music validation", () => {
 
     expect(result.isValid).toBe(false);
     expect(result.setWorkSummary.duplicateQ6SetWorkIds).toContain("sw_vocal_placeholder");
-    expect(result.blockingErrors.map((error) => error.id)).toContain("q6_duplicate_set_work");
+    const duplicateSetWorkError = result.blockingErrors.find((error) => error.id === "q6_duplicate_set_work");
+    expect(duplicateSetWorkError?.label).toBe("Duplicate set work in Question 6 options");
+    expect(duplicateSetWorkError?.detail).toBe("Choose four essay options based on different set works.");
   });
 });
