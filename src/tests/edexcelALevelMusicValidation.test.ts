@@ -74,6 +74,52 @@ describe("Edexcel A level Music validation", () => {
     expect(result.exportReadiness.reasons).toContain("Questions 1 to 3 total 41 / 42");
   });
 
+  it("uses draft-only sub-question edits to recalculate Questions 1 to 3", () => {
+    const draft = createInitialPaperDraft();
+    const originalQuestion = edexcelMusicDataPack.questions.find(
+      (question) => question.id === "q2_synthetic_vocal_13",
+    );
+
+    if (!originalQuestion) {
+      throw new Error("Expected synthetic Q2 seed question");
+    }
+
+    draft.modifiedSubQuestionsByQuestionId.q2_synthetic_vocal_13 = originalQuestion.subQuestions.map(
+      (subQuestion) => (subQuestion.id === "q2c" ? { ...subQuestion, marks: 5 } : subQuestion),
+    );
+
+    const invalidResult = validate(draft);
+    expect(invalidResult.isValid).toBe(false);
+    expect(invalidResult.marksSummary.q1ToQ3Total).toBe(41);
+
+    const firstSubQuestion = originalQuestion.subQuestions[0];
+    const secondSubQuestion = originalQuestion.subQuestions[1];
+
+    if (!firstSubQuestion || !secondSubQuestion) {
+      throw new Error("Expected synthetic Q2 to have at least two sub-questions");
+    }
+
+    draft.modifiedSubQuestionsByQuestionId.q2_synthetic_vocal_13 = [
+      firstSubQuestion,
+      secondSubQuestion,
+      {
+        id: "q2_draft_added",
+        parentQuestionId: originalQuestion.id,
+        label: "c",
+        prompt: "Synthetic prompt placeholder.",
+        marks: 6,
+        displayOrder: 3,
+        enabled: true,
+      },
+    ];
+
+    const validResult = validate(draft);
+    expect(validResult.isValid).toBe(true);
+    expect(validResult.marksSummary.q1ToQ3Total).toBe(42);
+    expect(originalQuestion.subQuestions).toHaveLength(3);
+    expect(originalQuestion.subQuestions.find((subQuestion) => subQuestion.id === "q2c")?.marks).toBe(6);
+  });
+
   it("blocks export when Questions 1 to 3 duplicate an Area of Study", () => {
     const draft = createInitialPaperDraft();
     draft.selectedQuestionIdsBySlot.q3 = "q2_synthetic_vocal_13";

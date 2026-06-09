@@ -1,4 +1,15 @@
-import { AlertTriangle, CheckCircle2, CircleAlert, FilePenLine, Info, Music2 } from "lucide-react";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  CircleAlert,
+  FilePenLine,
+  Info,
+  Music2,
+  Plus,
+  Trash2,
+  X,
+} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { QuestionType } from "../../domain/exam/types";
 import type {
   AreaOfStudy,
@@ -9,6 +20,7 @@ import type {
   Question,
   QuestionType as QuestionTypeValue,
   SetWork,
+  SubQuestion,
   ValidationState,
 } from "../../domain/exam/types";
 import { getQuestionMarksForDraft } from "../../domain/validation/edexcelALevelMusic";
@@ -19,6 +31,7 @@ interface PaperBuilderScreenProps {
   template: PaperTemplate;
   validationState: ValidationState;
   onSlotChange: (slotKey: PaperSlotKey, questionId: string) => void;
+  onSubQuestionsSave: (questionId: string, subQuestions: SubQuestion[]) => void;
 }
 
 const questionTypeLabels: Record<QuestionTypeValue, string> = {
@@ -47,7 +60,9 @@ export const PaperBuilderScreen = ({
   template,
   validationState,
   onSlotChange,
+  onSubQuestionsSave,
 }: PaperBuilderScreenProps) => {
+  const [editingSlotKey, setEditingSlotKey] = useState<PaperSlotKey | null>(null);
   const specification = dataPack.specifications.find((item) => item.id === template.specificationId);
   const examBoard = dataPack.examBoards.find((item) => item.id === specification?.examBoardId);
   const qualification = dataPack.qualifications.find((item) => item.id === specification?.qualificationId);
@@ -71,6 +86,9 @@ export const PaperBuilderScreen = ({
       validationState,
       isSelected: Boolean(draft.selectedQuestionIdsBySlot[slotKey]),
     });
+  const editingQuestion = editingSlotKey
+    ? selectedQuestionForSlot(draft, questionById, editingSlotKey)
+    : undefined;
 
   return (
     <div className="paper-builder-layout">
@@ -107,6 +125,7 @@ export const PaperBuilderScreen = ({
               key={slotKey}
               number={number}
               onSlotChange={onSlotChange}
+              onEditSubQuestions={() => setEditingSlotKey(slotKey)}
               options={questionsByType(QuestionType.SetWorkShortAnswerListening)}
               questionById={questionById}
               setWorkById={setWorkById}
@@ -134,7 +153,7 @@ export const PaperBuilderScreen = ({
               Questions 1-3 must total 42 marks.{" "}
               {validationState.marksSummary.q1ToQ3Total === 42
                 ? "The mark total is valid."
-                : "Edit selections or sub-questions in the next implementation pass."}
+                : "Edit selections or sub-questions."}
             </p>
             <p
               className={
@@ -248,6 +267,19 @@ export const PaperBuilderScreen = ({
       </section>
 
       <PaperHealthPanel validationState={validationState} />
+
+      {editingQuestion ? (
+        <SubQuestionEditorModal
+          draft={draft}
+          onClose={() => setEditingSlotKey(null)}
+          onSave={(subQuestions) => {
+            onSubQuestionsSave(editingQuestion.id, subQuestions);
+            setEditingSlotKey(null);
+          }}
+          question={editingQuestion}
+          questionById={questionById}
+        />
+      ) : null}
     </div>
   );
 };
@@ -265,6 +297,7 @@ interface QuestionCardProps {
   draft: PaperDraft;
   fixedMarksLabel?: string;
   number: string;
+  onEditSubQuestions?: () => void;
   onSlotChange: (slotKey: PaperSlotKey, questionId: string) => void;
   options: Question[];
   questionById: Map<string, Question>;
@@ -280,6 +313,7 @@ const QuestionCard = ({
   draft,
   fixedMarksLabel,
   number,
+  onEditSubQuestions,
   onSlotChange,
   options,
   questionById,
@@ -344,7 +378,7 @@ const QuestionCard = ({
           </span>
           {setWork ? <span className="metadata-pill">{setWork.title}</span> : null}
           {selectedQuestion?.questionType === "set_work_short_answer_listening" ? (
-            <button className="subquestion-button" disabled type="button">
+            <button className="subquestion-button" onClick={onEditSubQuestions} type="button">
               <FilePenLine size={15} />
               Edit sub-questions
             </button>
@@ -423,6 +457,187 @@ const ValidityBadge = ({ label, tone }: SlotStatus) => (
     {label}
   </span>
 );
+
+interface SubQuestionEditorModalProps {
+  draft: PaperDraft;
+  onClose: () => void;
+  onSave: (subQuestions: SubQuestion[]) => void;
+  question: Question;
+  questionById: Map<string, Question>;
+}
+
+const SubQuestionEditorModal = ({
+  draft,
+  onClose,
+  onSave,
+  question,
+  questionById,
+}: SubQuestionEditorModalProps) => {
+  const [rows, setRows] = useState<SubQuestion[]>(() => subQuestionsForDraft(question, draft));
+
+  useEffect(() => {
+    setRows(subQuestionsForDraft(question, draft));
+  }, [draft, question]);
+
+  const questionTotal = useMemo(() => sumEnabledMarks(rows), [rows]);
+  const q1ToQ3Total = useMemo(
+    () =>
+      q1ToQ3Slots.reduce((total, slot) => {
+        const selectedQuestion = selectedQuestionForSlot(draft, questionById, slot.slotKey);
+
+        if (!selectedQuestion) {
+          return total;
+        }
+
+        return (
+          total +
+          (selectedQuestion.id === question.id
+            ? questionTotal
+            : getQuestionMarksForDraft(selectedQuestion, draft))
+        );
+      }, 0),
+    [draft, question.id, questionById, questionTotal],
+  );
+
+  const updateMarks = (subQuestionId: string, marksValue: string) => {
+    const parsedMarks = Number.parseInt(marksValue, 10);
+    const marks = Number.isFinite(parsedMarks) ? Math.max(0, parsedMarks) : 0;
+
+    setRows((currentRows) => currentRows.map((row) => (row.id === subQuestionId ? { ...row, marks } : row)));
+  };
+
+  const addSubQuestion = () => {
+    setRows((currentRows) => {
+      const displayOrder = currentRows.length + 1;
+
+      return [
+        ...currentRows,
+        {
+          id: createDraftSubQuestionId(question.id),
+          parentQuestionId: question.id,
+          label: nextSubQuestionLabel(displayOrder),
+          prompt: "Draft sub-question placeholder.",
+          marks: 1,
+          displayOrder,
+          enabled: true,
+        },
+      ];
+    });
+  };
+
+  const removeSubQuestion = (subQuestionId: string) => {
+    setRows((currentRows) => currentRows.filter((row) => row.id !== subQuestionId));
+  };
+
+  const saveRows = () => {
+    onSave(
+      rows.map((row, index) => ({
+        ...row,
+        parentQuestionId: question.id,
+        displayOrder: index + 1,
+        enabled: true,
+      })),
+    );
+  };
+
+  return (
+    <div className="modal-backdrop">
+      <section aria-modal="true" className="subquestion-modal" role="dialog">
+        <div className="modal-header">
+          <div>
+            <h2>Edit sub-questions</h2>
+            <p>{question.title}</p>
+          </div>
+          <button
+            aria-label="Close sub-question editor"
+            className="icon-button"
+            onClick={onClose}
+            type="button"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="modal-summary">
+          <div>
+            <span>Question total</span>
+            <strong>{questionTotal} marks</strong>
+          </div>
+          <div className={q1ToQ3Total === 42 ? "modal-total valid" : "modal-total warning"}>
+            <span>Q1-3 total</span>
+            <strong>{q1ToQ3Total} / 42</strong>
+          </div>
+        </div>
+
+        <div className="subquestion-list">
+          {rows.map((row, index) => (
+            <div className="subquestion-row" key={row.id}>
+              <span className="option-letter">{row.label || nextSubQuestionLabel(index + 1)}</span>
+              <div>
+                <strong>Sub-question {row.label || nextSubQuestionLabel(index + 1)}</strong>
+                <p>{row.prompt}</p>
+              </div>
+              <label className="field-group mark-editor">
+                <span>Marks</span>
+                <input
+                  className="field-control"
+                  min="0"
+                  onChange={(event) => updateMarks(row.id, event.target.value)}
+                  type="number"
+                  value={row.marks}
+                />
+              </label>
+              <button
+                aria-label={`Remove sub-question ${row.label || index + 1}`}
+                className="icon-button danger"
+                onClick={() => removeSubQuestion(row.id)}
+                type="button"
+              >
+                <Trash2 size={17} />
+              </button>
+            </div>
+          ))}
+        </div>
+
+        <div className="modal-actions">
+          <button className="quiet-button" onClick={addSubQuestion} type="button">
+            <Plus size={15} />
+            Add sub-question
+          </button>
+          <div>
+            <button className="quiet-button" onClick={onClose} type="button">
+              Cancel
+            </button>
+            <button className="primary-button" onClick={saveRows} type="button">
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+const subQuestionsForDraft = (question: Question, draft: PaperDraft): SubQuestion[] => {
+  const subQuestions = draft.modifiedSubQuestionsByQuestionId[question.id] ?? question.subQuestions;
+
+  return subQuestions.map((subQuestion, index) => ({
+    ...subQuestion,
+    parentQuestionId: question.id,
+    displayOrder: index + 1,
+  }));
+};
+
+const sumEnabledMarks = (subQuestions: SubQuestion[]) =>
+  subQuestions
+    .filter((subQuestion) => subQuestion.enabled)
+    .reduce((total, subQuestion) => total + subQuestion.marks, 0);
+
+const nextSubQuestionLabel = (displayOrder: number) =>
+  displayOrder <= 26 ? String.fromCharCode(96 + displayOrder) : `z${displayOrder}`;
+
+const createDraftSubQuestionId = (questionId: string) =>
+  `${questionId}_draft_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
 const selectedQuestionForSlot = (
   draft: PaperDraft,

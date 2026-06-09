@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { AppShell } from "../components/layout/AppShell";
 import { brandProfiles } from "../domain/branding/brandProfiles";
 import { edexcelALevelMusicTemplate } from "../domain/exam/template";
-import type { BrandMode, PaperDraft, PaperSlotKey } from "../domain/exam/types";
+import type { BrandMode, PaperDraft, PaperSlotKey, SubQuestion } from "../domain/exam/types";
 import { validateEdexcelALevelMusicPaper } from "../domain/validation/edexcelALevelMusic";
 import { AudioLibraryScreen } from "../features/audio-library/AudioLibraryScreen";
 import { DataPacksScreen } from "../features/data-packs/DataPacksScreen";
@@ -68,6 +68,17 @@ export const App = () => {
     }));
   };
 
+  const handleSubQuestionsSave = (questionId: string, subQuestions: SubQuestion[]) => {
+    setDraft((currentDraft) => ({
+      ...currentDraft,
+      modifiedSubQuestionsByQuestionId: {
+        ...currentDraft.modifiedSubQuestionsByQuestionId,
+        [questionId]: subQuestions,
+      },
+      updatedAt: new Date().toISOString(),
+    }));
+  };
+
   const handleBrandModeChange = (nextMode: BrandMode) => {
     setBrandMode(nextMode);
     const nextBrand = brandProfiles.find((brandProfile) => brandProfile.mode === nextMode);
@@ -90,6 +101,7 @@ export const App = () => {
             template={edexcelALevelMusicTemplate}
             validationState={validationState}
             onSlotChange={handleSlotChange}
+            onSubQuestionsSave={handleSubQuestionsSave}
           />
         );
       case "question-bank":
