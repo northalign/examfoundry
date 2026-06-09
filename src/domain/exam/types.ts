@@ -116,6 +116,8 @@ export interface Question {
   hasScore: boolean;
   audioAssetIds: string[];
   scoreAssetIds: string[];
+  supportingAssetIds?: string[];
+  sourceDocumentAssetIds?: string[];
   subQuestions: SubQuestion[];
   copyrightStatus: CopyrightStatus;
   sourceNotes?: string;
@@ -249,4 +251,25 @@ export interface DataPack {
   setWorks: SetWork[];
   assets: Asset[];
   questions: Question[];
+  importedPapers?: ImportedPaper[];
+}
+
+export interface ImportedPaper {
+  id: string;
+  specificationId: string;
+  board: string;
+  qualification: string;
+  subject: string;
+  specification: string;
+  component: string;
+  paper: string;
+  year: number;
+  series: string;
+  localPath: string;
+  manifestPath: string | null;
+  paperJsonPath: string;
+  questionIds: string[];
+  expectedAudioFilenames: string[];
+  hasSeparateResourceBooklet: boolean;
+  resourceBookletPath?: string;
 }

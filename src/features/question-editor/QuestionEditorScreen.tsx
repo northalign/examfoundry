@@ -385,6 +385,8 @@ const cloneQuestion = (question: Question): Question => ({
   ...question,
   audioAssetIds: [...question.audioAssetIds],
   scoreAssetIds: [...question.scoreAssetIds],
+  supportingAssetIds: question.supportingAssetIds ? [...question.supportingAssetIds] : undefined,
+  sourceDocumentAssetIds: question.sourceDocumentAssetIds ? [...question.sourceDocumentAssetIds] : undefined,
   subQuestions: question.subQuestions.map((subQuestion) => ({ ...subQuestion })),
 });
 
@@ -395,7 +397,12 @@ const parseAssetIds = (value: string) =>
     .filter(Boolean);
 
 const assetsForQuestion = (question: Question, assetById: Map<string, Asset>) =>
-  [...question.audioAssetIds, ...question.scoreAssetIds]
+  [
+    ...question.audioAssetIds,
+    ...question.scoreAssetIds,
+    ...(question.supportingAssetIds ?? []),
+    ...(question.sourceDocumentAssetIds ?? []),
+  ]
     .map((assetId) => assetById.get(assetId))
     .filter((asset): asset is Asset => Boolean(asset));
 

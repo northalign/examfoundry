@@ -1350,6 +1350,31 @@ textarea.field-control {
   border-top: 1px solid #e7e0d5;
 }
 
+.stacked-row {
+  display: block;
+}
+
+.imported-paper-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.imported-paper-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background: #f5f1ea;
+  border: 1px solid #ddd5ca;
+  border-radius: 6px;
+}
+
+.imported-paper-item p {
+  margin-top: 3px;
+}
+
 .segmented-control {
   display: flex;
   gap: 8px;

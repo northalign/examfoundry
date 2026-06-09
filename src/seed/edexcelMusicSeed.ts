@@ -1,9 +1,13 @@
+import importedLocalDataPack from "../../seed-data/edexcel-a-level-music-imported-9mu0-03.json";
 import rawSeedData from "../../seed-data/edexcel-a-level-music-sample.json";
 import { brandProfiles } from "../domain/branding/brandProfiles";
 import { edexcelALevelMusicTemplate } from "../domain/exam/template";
 import type { DataPack, PaperDraft, PaperSlotKey, QuestionType } from "../domain/exam/types";
 
-export const edexcelMusicDataPack = rawSeedData as DataPack;
+const syntheticDataPack = rawSeedData as DataPack;
+const importedDataPack = importedLocalDataPack as DataPack;
+
+export const edexcelMusicDataPack: DataPack = mergeDataPacks(syntheticDataPack, importedDataPack);
 
 export const questionsByType = (questionType: QuestionType) =>
   edexcelMusicDataPack.questions.filter(
@@ -37,3 +41,35 @@ export const createInitialPaperDraft = (): PaperDraft => {
     updatedAt: now,
   };
 };
+
+function mergeDataPacks(baseDataPack: DataPack, localDataPack: DataPack): DataPack {
+  return {
+    ...baseDataPack,
+    name: "Edexcel A level Music Seed and Imported Local Registry",
+    containsCopyrightedMaterial:
+      baseDataPack.containsCopyrightedMaterial || localDataPack.containsCopyrightedMaterial,
+    distributionAllowed: baseDataPack.distributionAllowed && localDataPack.distributionAllowed,
+    localOnly: baseDataPack.localOnly || localDataPack.localOnly,
+    notes:
+      "Synthetic development data is bundled, and local imported 9MU0/03 metadata is available. Protected imported assets remain in local-assets/.",
+    examBoards: mergeById(baseDataPack.examBoards, localDataPack.examBoards),
+    qualifications: mergeById(baseDataPack.qualifications, localDataPack.qualifications),
+    subjects: mergeById(baseDataPack.subjects, localDataPack.subjects),
+    specifications: mergeById(baseDataPack.specifications, localDataPack.specifications),
+    areasOfStudy: mergeById(baseDataPack.areasOfStudy, localDataPack.areasOfStudy),
+    setWorks: mergeById(baseDataPack.setWorks, localDataPack.setWorks),
+    assets: mergeById(baseDataPack.assets, localDataPack.assets),
+    questions: mergeById(baseDataPack.questions, localDataPack.questions),
+    importedPapers: mergeById(baseDataPack.importedPapers ?? [], localDataPack.importedPapers ?? []),
+  };
+}
+
+function mergeById<TItem extends { id: string }>(firstItems: TItem[], secondItems: TItem[]): TItem[] {
+  const itemById = new Map<string, TItem>();
+
+  for (const item of [...firstItems, ...secondItems]) {
+    itemById.set(item.id, item);
+  }
+
+  return [...itemById.values()];
+}

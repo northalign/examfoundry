@@ -5,7 +5,7 @@ export const DataPacksScreen = ({ dataPack }: { dataPack: DataPack }) => (
   <section className="content-panel narrow">
     <div className="page-heading">
       <h1>Data Packs</h1>
-      <p>Import and manage question bank data packs. v0.9 ships with synthetic development data only.</p>
+      <p>Review the current local question-bank registry. Generic import tooling is planned for v1.2.</p>
     </div>
 
     <article className="settings-card">
@@ -33,13 +33,43 @@ export const DataPacksScreen = ({ dataPack }: { dataPack: DataPack }) => (
       <div className="settings-row">
         <div>
           <strong>Import/export</strong>
-          <p>Data pack import and export are planned for v1.2.</p>
+          <p>This build includes a one-off local Edexcel 9MU0/03 asset registry.</p>
         </div>
         <button className="quiet-button" disabled type="button">
           <Lock size={15} />
           Import data pack
         </button>
       </div>
+      {dataPack.importedPapers?.length ? (
+        <div className="settings-row stacked-row">
+          <div>
+            <strong>Imported papers</strong>
+            <p>
+              {dataPack.importedPapers.length} Edexcel A level Music Component 3 papers are registered
+              locally.
+            </p>
+          </div>
+          <div className="imported-paper-list">
+            {dataPack.importedPapers.map((paper) => (
+              <article className="imported-paper-item" key={paper.id}>
+                <div>
+                  <strong>
+                    {paper.year} {paper.series}
+                  </strong>
+                  <p>
+                    {paper.board} {paper.qualification} {paper.specification}/{paper.paper} -{" "}
+                    {paper.component}
+                  </p>
+                </div>
+                <span className="metadata-pill">{paper.questionIds.length} items</span>
+                {paper.hasSeparateResourceBooklet ? (
+                  <span className="metadata-pill warning">Separate resource booklet</span>
+                ) : null}
+              </article>
+            ))}
+          </div>
+        </div>
+      ) : null}
       <button className="quiet-button" disabled type="button">
         <Download size={15} />
         Export manifest

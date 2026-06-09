@@ -37,7 +37,7 @@ export const QuestionBankScreen = ({ dataPack }: { dataPack: DataPack }) => {
     <section className="content-panel">
       <div className="page-heading">
         <h1>Question Bank</h1>
-        <p>Browse synthetic development questions and asset metadata for the v0.9 build.</p>
+        <p>Browse synthetic development questions and locally imported Edexcel 9MU0/03 metadata.</p>
       </div>
 
       <div className="toolbar-row">
