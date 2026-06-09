@@ -1,0 +1,626 @@
+{
+  "manifestVersion": "0.1",
+  "dataPackVersion": "0.9.0",
+  "packId": "exam-foundry-synthetic-edexcel-a-level-music-0-9",
+  "name": "Synthetic Edexcel A level Music Seed Data",
+  "publisher": "Exam Foundry",
+  "containsCopyrightedMaterial": false,
+  "distributionAllowed": true,
+  "localOnly": false,
+  "notes": "Synthetic development data only. Do not confuse with real Edexcel papers, audio, scores, or mark schemes.",
+  "examBoards": [
+    {
+      "id": "board_edexcel",
+      "name": "Edexcel",
+      "slug": "edexcel",
+      "enabled": true
+    }
+  ],
+  "qualifications": [
+    {
+      "id": "qual_a_level",
+      "name": "A level",
+      "slug": "a-level",
+      "enabled": true
+    }
+  ],
+  "subjects": [
+    {
+      "id": "subject_music",
+      "name": "Music",
+      "slug": "music",
+      "enabled": true
+    }
+  ],
+  "specifications": [
+    {
+      "id": "spec_edexcel_a_level_music_9mu0_03",
+      "examBoardId": "board_edexcel",
+      "qualificationId": "qual_a_level",
+      "subjectId": "subject_music",
+      "code": "9MU0/03",
+      "title": "Edexcel A level Music, Appraising",
+      "versionLabel": "v0.9 synthetic",
+      "enabled": true
+    }
+  ],
+  "areasOfStudy": [
+    {
+      "id": "aos_vocal",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "name": "Vocal Music",
+      "slug": "vocal-music",
+      "displayOrder": 1,
+      "enabled": true
+    },
+    {
+      "id": "aos_instrumental",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "name": "Instrumental Music",
+      "slug": "instrumental-music",
+      "displayOrder": 2,
+      "enabled": true
+    },
+    {
+      "id": "aos_film",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "name": "Music for Film",
+      "slug": "music-for-film",
+      "displayOrder": 3,
+      "enabled": true
+    },
+    {
+      "id": "aos_popular",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "name": "Popular Music and Jazz",
+      "slug": "popular-music-and-jazz",
+      "displayOrder": 4,
+      "enabled": true
+    },
+    {
+      "id": "aos_fusions",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "name": "Fusions",
+      "slug": "fusions",
+      "displayOrder": 5,
+      "enabled": true
+    },
+    {
+      "id": "aos_new_directions",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "name": "New Directions",
+      "slug": "new-directions",
+      "displayOrder": 6,
+      "enabled": true
+    }
+  ],
+  "setWorks": [
+    {
+      "id": "sw_vocal_placeholder",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "areaOfStudyId": "aos_vocal",
+      "title": "Synthetic Vocal Set Work",
+      "composerOrArtist": "Placeholder Composer",
+      "movementOrExtract": "Synthetic extract",
+      "enabled": true
+    },
+    {
+      "id": "sw_instrumental_placeholder",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "areaOfStudyId": "aos_instrumental",
+      "title": "Synthetic Instrumental Set Work",
+      "composerOrArtist": "Placeholder Composer",
+      "movementOrExtract": "Synthetic movement",
+      "enabled": true
+    },
+    {
+      "id": "sw_film_placeholder",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "areaOfStudyId": "aos_film",
+      "title": "Synthetic Film Set Work",
+      "composerOrArtist": "Placeholder Composer",
+      "movementOrExtract": "Synthetic cue",
+      "enabled": true
+    },
+    {
+      "id": "sw_popular_placeholder",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "areaOfStudyId": "aos_popular",
+      "title": "Synthetic Popular Set Work",
+      "composerOrArtist": "Placeholder Artist",
+      "movementOrExtract": "Synthetic song",
+      "enabled": true
+    },
+    {
+      "id": "sw_fusions_placeholder",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "areaOfStudyId": "aos_fusions",
+      "title": "Synthetic Fusions Set Work",
+      "composerOrArtist": "Placeholder Artist",
+      "movementOrExtract": "Synthetic piece",
+      "enabled": true
+    },
+    {
+      "id": "sw_new_directions_placeholder",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "areaOfStudyId": "aos_new_directions",
+      "title": "Synthetic New Directions Set Work",
+      "composerOrArtist": "Placeholder Composer",
+      "movementOrExtract": "Synthetic work",
+      "enabled": true
+    }
+  ],
+  "assets": [
+    {
+      "id": "asset_audio_q1",
+      "type": "audio",
+      "title": "Synthetic Q1 audio",
+      "fileName": "synthetic-q1-audio.mp3",
+      "localPath": "local-assets/audio/synthetic-q1-audio.mp3",
+      "mimeType": "audio/mpeg",
+      "durationSeconds": 95,
+      "checksum": null,
+      "copyrightStatus": "synthetic",
+      "missing": true
+    },
+    {
+      "id": "asset_audio_q2",
+      "type": "audio",
+      "title": "Synthetic Q2 audio",
+      "fileName": "synthetic-q2-audio.mp3",
+      "localPath": "local-assets/audio/synthetic-q2-audio.mp3",
+      "mimeType": "audio/mpeg",
+      "durationSeconds": 88,
+      "checksum": null,
+      "copyrightStatus": "synthetic",
+      "missing": true
+    },
+    {
+      "id": "asset_audio_q3",
+      "type": "audio",
+      "title": "Synthetic Q3 audio",
+      "fileName": "synthetic-q3-audio.mp3",
+      "localPath": "local-assets/audio/synthetic-q3-audio.mp3",
+      "mimeType": "audio/mpeg",
+      "durationSeconds": 102,
+      "checksum": null,
+      "copyrightStatus": "synthetic",
+      "missing": true
+    },
+    {
+      "id": "asset_audio_q4",
+      "type": "audio",
+      "title": "Synthetic dictation audio",
+      "fileName": "synthetic-dictation.mp3",
+      "localPath": "local-assets/audio/synthetic-dictation.mp3",
+      "mimeType": "audio/mpeg",
+      "durationSeconds": 70,
+      "checksum": null,
+      "copyrightStatus": "synthetic",
+      "missing": true
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1_synthetic_instrumental_14",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "questionType": "set_work_short_answer_listening",
+      "title": "Synthetic instrumental short-answer question, 14 marks",
+      "areaOfStudyId": "aos_instrumental",
+      "setWorkId": "sw_instrumental_placeholder",
+      "marks": 14,
+      "defaultQuestionNumber": 1,
+      "sourceLabel": "Synthetic",
+      "sourceYear": 2026,
+      "sourceSession": "Development",
+      "hasAudio": true,
+      "hasScore": true,
+      "audioAssetIds": ["asset_audio_q1"],
+      "scoreAssetIds": [],
+      "copyrightStatus": "synthetic",
+      "enabled": true,
+      "archived": false,
+      "subQuestions": [
+        {
+          "id": "q1a",
+          "label": "a",
+          "prompt": "Synthetic prompt placeholder.",
+          "marks": 2,
+          "displayOrder": 1,
+          "enabled": true
+        },
+        {
+          "id": "q1b",
+          "label": "b",
+          "prompt": "Synthetic prompt placeholder.",
+          "marks": 4,
+          "displayOrder": 2,
+          "enabled": true
+        },
+        {
+          "id": "q1c",
+          "label": "c",
+          "prompt": "Synthetic prompt placeholder.",
+          "marks": 3,
+          "displayOrder": 3,
+          "enabled": true
+        },
+        {
+          "id": "q1d",
+          "label": "d",
+          "prompt": "Synthetic prompt placeholder.",
+          "marks": 5,
+          "displayOrder": 4,
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "id": "q2_synthetic_vocal_13",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "questionType": "set_work_short_answer_listening",
+      "title": "Synthetic vocal short-answer question, 13 marks",
+      "areaOfStudyId": "aos_vocal",
+      "setWorkId": "sw_vocal_placeholder",
+      "marks": 13,
+      "defaultQuestionNumber": 2,
+      "sourceLabel": "Synthetic",
+      "sourceYear": 2026,
+      "sourceSession": "Development",
+      "hasAudio": true,
+      "hasScore": true,
+      "audioAssetIds": ["asset_audio_q2"],
+      "scoreAssetIds": [],
+      "copyrightStatus": "synthetic",
+      "enabled": true,
+      "archived": false,
+      "subQuestions": [
+        {
+          "id": "q2a",
+          "label": "a",
+          "prompt": "Synthetic prompt placeholder.",
+          "marks": 3,
+          "displayOrder": 1,
+          "enabled": true
+        },
+        {
+          "id": "q2b",
+          "label": "b",
+          "prompt": "Synthetic prompt placeholder.",
+          "marks": 4,
+          "displayOrder": 2,
+          "enabled": true
+        },
+        {
+          "id": "q2c",
+          "label": "c",
+          "prompt": "Synthetic prompt placeholder.",
+          "marks": 6,
+          "displayOrder": 3,
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "id": "q3_synthetic_film_15",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "questionType": "set_work_short_answer_listening",
+      "title": "Synthetic film short-answer question, 15 marks",
+      "areaOfStudyId": "aos_film",
+      "setWorkId": "sw_film_placeholder",
+      "marks": 15,
+      "defaultQuestionNumber": 3,
+      "sourceLabel": "Synthetic",
+      "sourceYear": 2026,
+      "sourceSession": "Development",
+      "hasAudio": true,
+      "hasScore": false,
+      "audioAssetIds": ["asset_audio_q3"],
+      "scoreAssetIds": [],
+      "copyrightStatus": "synthetic",
+      "enabled": true,
+      "archived": false,
+      "subQuestions": [
+        {
+          "id": "q3a",
+          "label": "a",
+          "prompt": "Synthetic prompt placeholder.",
+          "marks": 2,
+          "displayOrder": 1,
+          "enabled": true
+        },
+        {
+          "id": "q3b",
+          "label": "b",
+          "prompt": "Synthetic prompt placeholder.",
+          "marks": 5,
+          "displayOrder": 2,
+          "enabled": true
+        },
+        {
+          "id": "q3c",
+          "label": "c",
+          "prompt": "Synthetic prompt placeholder.",
+          "marks": 4,
+          "displayOrder": 3,
+          "enabled": true
+        },
+        {
+          "id": "q3d",
+          "label": "d",
+          "prompt": "Synthetic prompt placeholder.",
+          "marks": 4,
+          "displayOrder": 4,
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "id": "q4_synthetic_dictation_8",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "questionType": "dictation",
+      "title": "Synthetic dictation question, 8 marks",
+      "areaOfStudyId": null,
+      "setWorkId": null,
+      "marks": 8,
+      "defaultQuestionNumber": 4,
+      "sourceLabel": "Synthetic",
+      "sourceYear": 2026,
+      "sourceSession": "Development",
+      "hasAudio": true,
+      "hasScore": false,
+      "audioAssetIds": ["asset_audio_q4"],
+      "scoreAssetIds": [],
+      "copyrightStatus": "synthetic",
+      "enabled": true,
+      "archived": false,
+      "subQuestions": []
+    },
+    {
+      "id": "q5_synthetic_unfamiliar_20",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "questionType": "unfamiliar_listening_essay",
+      "title": "Synthetic unfamiliar listening essay, 20 marks",
+      "areaOfStudyId": null,
+      "setWorkId": null,
+      "marks": 20,
+      "defaultQuestionNumber": 5,
+      "sourceLabel": "Synthetic",
+      "sourceYear": 2026,
+      "sourceSession": "Development",
+      "hasAudio": true,
+      "hasScore": false,
+      "audioAssetIds": [],
+      "scoreAssetIds": [],
+      "copyrightStatus": "synthetic",
+      "enabled": true,
+      "archived": false,
+      "subQuestions": []
+    },
+    {
+      "id": "q6a_synthetic_vocal_30",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "questionType": "set_work_essay_option",
+      "title": "Synthetic Question 6 option, vocal, 30 marks",
+      "areaOfStudyId": "aos_vocal",
+      "setWorkId": "sw_vocal_placeholder",
+      "marks": 30,
+      "defaultQuestionNumber": 6,
+      "sourceLabel": "Synthetic",
+      "sourceYear": 2026,
+      "sourceSession": "Development",
+      "hasAudio": false,
+      "hasScore": false,
+      "audioAssetIds": [],
+      "scoreAssetIds": [],
+      "copyrightStatus": "synthetic",
+      "enabled": true,
+      "archived": false,
+      "subQuestions": []
+    },
+    {
+      "id": "q6b_synthetic_instrumental_30",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "questionType": "set_work_essay_option",
+      "title": "Synthetic Question 6 option, instrumental, 30 marks",
+      "areaOfStudyId": "aos_instrumental",
+      "setWorkId": "sw_instrumental_placeholder",
+      "marks": 30,
+      "defaultQuestionNumber": 6,
+      "sourceLabel": "Synthetic",
+      "sourceYear": 2026,
+      "sourceSession": "Development",
+      "hasAudio": false,
+      "hasScore": false,
+      "audioAssetIds": [],
+      "scoreAssetIds": [],
+      "copyrightStatus": "synthetic",
+      "enabled": true,
+      "archived": false,
+      "subQuestions": []
+    },
+    {
+      "id": "q6c_synthetic_popular_30",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "questionType": "set_work_essay_option",
+      "title": "Synthetic Question 6 option, popular, 30 marks",
+      "areaOfStudyId": "aos_popular",
+      "setWorkId": "sw_popular_placeholder",
+      "marks": 30,
+      "defaultQuestionNumber": 6,
+      "sourceLabel": "Synthetic",
+      "sourceYear": 2026,
+      "sourceSession": "Development",
+      "hasAudio": false,
+      "hasScore": false,
+      "audioAssetIds": [],
+      "scoreAssetIds": [],
+      "copyrightStatus": "synthetic",
+      "enabled": true,
+      "archived": false,
+      "subQuestions": []
+    },
+    {
+      "id": "q6d_synthetic_fusions_30",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "questionType": "set_work_essay_option",
+      "title": "Synthetic Question 6 option, fusions, 30 marks",
+      "areaOfStudyId": "aos_fusions",
+      "setWorkId": "sw_fusions_placeholder",
+      "marks": 30,
+      "defaultQuestionNumber": 6,
+      "sourceLabel": "Synthetic",
+      "sourceYear": 2026,
+      "sourceSession": "Development",
+      "hasAudio": false,
+      "hasScore": false,
+      "audioAssetIds": [],
+      "scoreAssetIds": [],
+      "copyrightStatus": "synthetic",
+      "enabled": true,
+      "archived": false,
+      "subQuestions": []
+    }
+  ],
+  "paperTemplates": [
+    {
+      "id": "template_edexcel_a_level_music_0_9",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "name": "Edexcel A level Music Paper Architecture",
+      "versionLabel": "0.9",
+      "enabled": true,
+      "slots": [
+        {
+          "slotKey": "q1",
+          "displayLabel": "Question 1",
+          "questionNumber": 1,
+          "acceptedQuestionTypes": ["set_work_short_answer_listening"],
+          "required": true,
+          "displayOrder": 1
+        },
+        {
+          "slotKey": "q2",
+          "displayLabel": "Question 2",
+          "questionNumber": 2,
+          "acceptedQuestionTypes": ["set_work_short_answer_listening"],
+          "required": true,
+          "displayOrder": 2
+        },
+        {
+          "slotKey": "q3",
+          "displayLabel": "Question 3",
+          "questionNumber": 3,
+          "acceptedQuestionTypes": ["set_work_short_answer_listening"],
+          "required": true,
+          "displayOrder": 3
+        },
+        {
+          "slotKey": "q4",
+          "displayLabel": "Question 4",
+          "questionNumber": 4,
+          "acceptedQuestionTypes": ["dictation"],
+          "fixedMarks": 8,
+          "required": true,
+          "displayOrder": 4
+        },
+        {
+          "slotKey": "q5",
+          "displayLabel": "Question 5",
+          "questionNumber": 5,
+          "acceptedQuestionTypes": ["unfamiliar_listening_essay"],
+          "fixedMarks": 20,
+          "required": true,
+          "displayOrder": 5
+        },
+        {
+          "slotKey": "q6a",
+          "displayLabel": "Question 6 Option A",
+          "questionNumber": 6,
+          "optionLabel": "A",
+          "acceptedQuestionTypes": ["set_work_essay_option"],
+          "fixedMarks": 30,
+          "required": true,
+          "displayOrder": 6
+        },
+        {
+          "slotKey": "q6b",
+          "displayLabel": "Question 6 Option B",
+          "questionNumber": 6,
+          "optionLabel": "B",
+          "acceptedQuestionTypes": ["set_work_essay_option"],
+          "fixedMarks": 30,
+          "required": true,
+          "displayOrder": 7
+        },
+        {
+          "slotKey": "q6c",
+          "displayLabel": "Question 6 Option C",
+          "questionNumber": 6,
+          "optionLabel": "C",
+          "acceptedQuestionTypes": ["set_work_essay_option"],
+          "fixedMarks": 30,
+          "required": true,
+          "displayOrder": 8
+        },
+        {
+          "slotKey": "q6d",
+          "displayLabel": "Question 6 Option D",
+          "questionNumber": 6,
+          "optionLabel": "D",
+          "acceptedQuestionTypes": ["set_work_essay_option"],
+          "fixedMarks": 30,
+          "required": true,
+          "displayOrder": 9
+        }
+      ]
+    }
+  ],
+  "paperDrafts": [
+    {
+      "id": "draft_valid_synthetic",
+      "title": "Synthetic valid Edexcel A level Music paper",
+      "specificationId": "spec_edexcel_a_level_music_9mu0_03",
+      "paperTemplateId": "template_edexcel_a_level_music_0_9",
+      "brandProfileId": "brand_stonyhurst",
+      "selectedQuestionIdsBySlot": {
+        "q1": "q1_synthetic_instrumental_14",
+        "q2": "q2_synthetic_vocal_13",
+        "q3": "q3_synthetic_film_15",
+        "q4": "q4_synthetic_dictation_8",
+        "q5": "q5_synthetic_unfamiliar_20",
+        "q6a": "q6a_synthetic_vocal_30",
+        "q6b": "q6b_synthetic_instrumental_30",
+        "q6c": "q6c_synthetic_popular_30",
+        "q6d": "q6d_synthetic_fusions_30"
+      },
+      "modifiedSubQuestionsByQuestionId": {},
+      "notes": "Synthetic valid draft. Q1 to Q3 total 42."
+    }
+  ],
+  "brandProfiles": [
+    {
+      "id": "brand_stonyhurst",
+      "name": "Stonyhurst",
+      "mode": "stonyhurst",
+      "logoAssetId": null,
+      "primaryColour": "#14213D",
+      "accentColour": "#8A1538",
+      "documentHeaderText": "AMDG",
+      "documentFooterText": "LDS",
+      "internalBuildLabel": "Stonyhurst Internal Build",
+      "enabled": true
+    },
+    {
+      "id": "brand_neutral",
+      "name": "Neutral",
+      "mode": "neutral",
+      "logoAssetId": null,
+      "primaryColour": "#1F2937",
+      "accentColour": "#6B7280",
+      "documentHeaderText": "",
+      "documentFooterText": "",
+      "internalBuildLabel": "Internal Build",
+      "enabled": true
+    }
+  ]
+}

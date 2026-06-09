@@ -1,0 +1,40 @@
+import type { BrandProfile } from "../exam/types";
+
+export const brandProfiles: BrandProfile[] = [
+  {
+    id: "brand_stonyhurst_internal",
+    name: "Stonyhurst",
+    mode: "stonyhurst",
+    logoAssetId: null,
+    primaryColour: "#1f2f5f",
+    accentColour: "#b5892a",
+    documentHeaderText: "Exam Foundry",
+    documentFooterText: "For internal use only - Stonyhurst",
+    internalBuildLabel: "Stonyhurst Internal Build",
+    enabled: true,
+  },
+  {
+    id: "brand_neutral_internal",
+    name: "Neutral",
+    mode: "neutral",
+    logoAssetId: null,
+    primaryColour: "#243047",
+    accentColour: "#8c6a2f",
+    documentHeaderText: "Exam Foundry",
+    documentFooterText: "For internal use only",
+    internalBuildLabel: "Internal Build",
+    enabled: true,
+  },
+  {
+    id: "brand_custom_placeholder",
+    name: "Custom",
+    mode: "custom",
+    logoAssetId: null,
+    primaryColour: "#243047",
+    accentColour: "#8c6a2f",
+    documentHeaderText: "Exam Foundry",
+    documentFooterText: "Custom branding placeholder",
+    internalBuildLabel: "Internal Build",
+    enabled: false,
+  },
+];
