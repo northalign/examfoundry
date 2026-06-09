@@ -359,6 +359,7 @@ h3,
 }
 
 .status-pill,
+.validity-badge,
 .metadata-pill,
 .type-badge,
 .mark-badge {
@@ -388,6 +389,18 @@ h3,
 
 .status-pill.warning,
 .health-status.warning {
+  color: #895d15;
+  background: #fff7e9;
+  border: 1px solid #e8c990;
+}
+
+.validity-badge.valid {
+  color: #2e6d43;
+  background: #eff7ef;
+  border: 1px solid #bed8c2;
+}
+
+.validity-badge.warning {
   color: #895d15;
   background: #fff7e9;
   border: 1px solid #e8c990;
@@ -604,9 +617,16 @@ textarea.field-control {
   font-size: 13px;
 }
 
-.validation-success {
+.validation-line {
   margin-top: 12px;
+}
+
+.validation-line.good {
   color: #2e6d43;
+}
+
+.validation-line.warn {
+  color: #895d15;
 }
 
 .q6-card .question-fields {
@@ -622,7 +642,7 @@ textarea.field-control {
 
 .q6-option-row {
   display: grid;
-  grid-template-columns: 32px minmax(280px, 1fr) minmax(160px, auto) minmax(120px, auto);
+  grid-template-columns: 32px minmax(280px, 1fr) minmax(150px, auto) minmax(110px, auto) minmax(120px, auto);
   align-items: center;
   gap: 10px;
 }

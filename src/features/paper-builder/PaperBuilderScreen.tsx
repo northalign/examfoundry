@@ -62,6 +62,15 @@ export const PaperBuilderScreen = ({
     );
 
   const totalProgress = Math.min(100, (validationState.marksSummary.q1ToQ3Total / 42) * 100);
+  const q1ToQ3ValidationValid =
+    validationState.marksSummary.q1ToQ3Total === 42 && validationState.areaOfStudySummary.isValid;
+  const slotStatus = (slotKey: PaperSlotKey) =>
+    getSlotStatus({
+      slotKey,
+      draft,
+      validationState,
+      isSelected: Boolean(draft.selectedQuestionIdsBySlot[slotKey]),
+    });
 
   return (
     <div className="paper-builder-layout">
@@ -102,20 +111,15 @@ export const PaperBuilderScreen = ({
               questionById={questionById}
               setWorkById={setWorkById}
               slotKey={slotKey}
+              status={slotStatus(slotKey)}
               title={label}
             />
           ))}
 
-          <div
-            className={
-              validationState.marksSummary.q1ToQ3Total === 42
-                ? "validation-card valid"
-                : "validation-card warning"
-            }
-          >
+          <div className={q1ToQ3ValidationValid ? "validation-card valid" : "validation-card warning"}>
             <div className="validation-card-header">
               <strong>
-                <AlertTriangle size={16} />
+                {q1ToQ3ValidationValid ? <CheckCircle2 size={16} /> : <AlertTriangle size={16} />}
                 Questions 1-3 Validation
               </strong>
               <span>
@@ -132,8 +136,16 @@ export const PaperBuilderScreen = ({
                 ? "The mark total is valid."
                 : "Edit selections or sub-questions in the next implementation pass."}
             </p>
-            <p className="validation-success">
-              <CheckCircle2 size={15} />
+            <p
+              className={
+                validationState.areaOfStudySummary.isValid ? "validation-line good" : "validation-line warn"
+              }
+            >
+              {validationState.areaOfStudySummary.isValid ? (
+                <CheckCircle2 size={15} />
+              ) : (
+                <AlertTriangle size={15} />
+              )}
               {validationState.areaOfStudySummary.isValid
                 ? "Questions 1-3 use three different Areas of Study"
                 : "Questions 1-3 must use three different Areas of Study"}
@@ -151,6 +163,7 @@ export const PaperBuilderScreen = ({
             questionById={questionById}
             setWorkById={setWorkById}
             slotKey="q4"
+            status={slotStatus("q4")}
             title="Question 4"
           />
 
@@ -165,6 +178,7 @@ export const PaperBuilderScreen = ({
             questionById={questionById}
             setWorkById={setWorkById}
             slotKey="q5"
+            status={slotStatus("q5")}
             title="Question 5"
           />
 
@@ -175,6 +189,10 @@ export const PaperBuilderScreen = ({
                 <strong>Question 6</strong>
                 <span className="type-badge">{questionTypeLabels[QuestionType.SetWorkEssayOption]}</span>
                 <span className="mark-badge">30 marks fixed</span>
+                <ValidityBadge
+                  label={validationState.setWorkSummary.isValid ? "Valid" : "Needs attention"}
+                  tone={validationState.setWorkSummary.isValid ? "valid" : "warning"}
+                />
               </div>
               <div className="q6-options">
                 {q6Slots.map(({ slotKey, optionLabel }) => {
@@ -185,6 +203,7 @@ export const PaperBuilderScreen = ({
                   const area = selectedQuestion?.areaOfStudyId
                     ? areaById.get(selectedQuestion.areaOfStudyId)
                     : undefined;
+                  const optionStatus = slotStatus(slotKey);
 
                   return (
                     <div className="q6-option-row" key={slotKey}>
@@ -204,6 +223,7 @@ export const PaperBuilderScreen = ({
                       </select>
                       <span className="metadata-pill">{setWork?.title ?? "Set work needed"}</span>
                       <span className="metadata-pill">{area?.name ?? "AoS needed"}</span>
+                      <ValidityBadge label={optionStatus.label} tone={optionStatus.tone} />
                     </div>
                   );
                 })}
@@ -250,6 +270,7 @@ interface QuestionCardProps {
   questionById: Map<string, Question>;
   setWorkById: Map<string, SetWork>;
   slotKey: PaperSlotKey;
+  status: SlotStatus;
   title: string;
 }
 
@@ -264,6 +285,7 @@ const QuestionCard = ({
   questionById,
   setWorkById,
   slotKey,
+  status,
   title,
 }: QuestionCardProps) => {
   const selectedQuestion = selectedQuestionForSlot(draft, questionById, slotKey);
@@ -279,6 +301,7 @@ const QuestionCard = ({
           <strong>{title}</strong>
           <span className="type-badge">{badgeLabel}</span>
           {fixedMarksLabel ? <span className="mark-badge">{fixedMarksLabel}</span> : null}
+          <ValidityBadge label={status.label} tone={status.tone} />
         </div>
 
         <div className="question-fields">
@@ -337,6 +360,68 @@ const FieldDisplay = ({ label, muted = false, value }: { label: string; muted?: 
     <span>{label}</span>
     <strong>{value}</strong>
   </div>
+);
+
+interface SlotStatus {
+  label: string;
+  tone: "valid" | "warning";
+}
+
+const getSlotStatus = ({
+  draft,
+  isSelected,
+  slotKey,
+  validationState,
+}: {
+  draft: PaperDraft;
+  isSelected: boolean;
+  slotKey: PaperSlotKey;
+  validationState: ValidationState;
+}): SlotStatus => {
+  const selectedQuestionId = draft.selectedQuestionIdsBySlot[slotKey];
+  const slotError = validationState.blockingErrors.find(
+    (error) =>
+      error.slotKey === slotKey ||
+      error.id === `missing_${slotKey}` ||
+      error.id === `unknown_${slotKey}` ||
+      error.id === `wrong_type_${slotKey}` ||
+      (slotKey === "q4" && error.id === "q4_fixed_marks") ||
+      (slotKey === "q5" && error.id === "q5_fixed_marks") ||
+      (slotKey.startsWith("q6") && error.id === "q6_fixed_marks_" + selectedQuestionId),
+  );
+
+  if (slotError) {
+    return { label: "Needs attention", tone: "warning" };
+  }
+
+  if (
+    q1ToQ3Slots.some((slot) => slot.slotKey === slotKey) &&
+    validationState.blockingErrors.some(
+      (error) => error.id === "q1_to_q3_total" || error.id === "q1_to_q3_areas",
+    )
+  ) {
+    return { label: "Review group", tone: "warning" };
+  }
+
+  if (
+    slotKey.startsWith("q6") &&
+    validationState.blockingErrors.some((error) => error.id === "q6_duplicate_set_work")
+  ) {
+    return { label: "Review options", tone: "warning" };
+  }
+
+  if (!isSelected) {
+    return { label: "Needs selection", tone: "warning" };
+  }
+
+  return { label: "Valid", tone: "valid" };
+};
+
+const ValidityBadge = ({ label, tone }: SlotStatus) => (
+  <span className={`validity-badge ${tone}`}>
+    {tone === "valid" ? <CheckCircle2 size={14} /> : <AlertTriangle size={14} />}
+    {label}
+  </span>
 );
 
 const selectedQuestionForSlot = (
