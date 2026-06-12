@@ -648,88 +648,94 @@ const selectedQuestionForSlot = (
   return questionId ? questionById.get(questionId) : undefined;
 };
 
-const PaperHealthPanel = ({ validationState }: { validationState: ValidationState }) => (
-  <aside className="paper-health-panel">
-    <h2>Paper Health</h2>
-    <div className={validationState.isValid ? "health-status valid" : "health-status warning"}>
-      {validationState.isValid ? <CheckCircle2 size={17} /> : <AlertTriangle size={17} />}
-      <strong>{validationState.isValid ? "Valid paper" : "Needs attention"}</strong>
-    </div>
+const PaperHealthPanel = ({ validationState }: { validationState: ValidationState }) => {
+  const missingAudioCount = validationState.assetSummary.missingAudioAssetIds.length;
+  const availableAudioCount = Math.max(0, validationState.assetSummary.linkedAudioCount - missingAudioCount);
+  const audioReady =
+    validationState.assetSummary.requiredAudioCount === validationState.assetSummary.linkedAudioCount &&
+    missingAudioCount === 0;
+  const audioDetail =
+    validationState.assetSummary.requiredAudioCount === 0
+      ? "No audio required"
+      : `${availableAudioCount} / ${validationState.assetSummary.requiredAudioCount} available`;
 
-    <div className="health-list">
-      <HealthRow
-        detail={`${validationState.marksSummary.q1ToQ3Total} / ${validationState.marksSummary.q1ToQ3RequiredTotal}`}
-        good={validationState.marksSummary.q1ToQ3Total === validationState.marksSummary.q1ToQ3RequiredTotal}
-        label="Questions 1-3 total"
-      />
-      <HealthRow good={validationState.areaOfStudySummary.isValid} label="Areas of Study" />
-      <HealthRow
-        good={!validationState.blockingErrors.some((error) => error.id.includes("q4"))}
-        label="Question 4"
-      />
-      <HealthRow
-        good={!validationState.blockingErrors.some((error) => error.id.includes("q5"))}
-        label="Question 5"
-      />
-      <HealthRow good={validationState.setWorkSummary.isValid} label="Question 6 options" />
-      <HealthRow
-        detail={`${validationState.assetSummary.linkedAudioCount} of ${validationState.assetSummary.requiredAudioCount} linked`}
-        good={
-          validationState.assetSummary.linkedAudioCount === validationState.assetSummary.requiredAudioCount
-        }
-        label="Audio metadata"
-      />
-      <HealthRow detail={`${validationState.assetSummary.scoreCount} indicated`} good label="Scores" />
-      <HealthRow
-        detail={validationState.isValid ? "Ready for preview" : "Blocked"}
-        good={validationState.isValid}
-        label="Export readiness"
-      />
-    </div>
-
-    {validationState.blockingErrors.length > 0 ? (
-      <div className="health-message-list blocking">
-        {validationState.blockingErrors.map((error) => (
-          <p key={error.id}>{error.label}</p>
-        ))}
+  return (
+    <aside className="paper-health-panel">
+      <h2>Paper Health</h2>
+      <div className={validationState.isValid ? "health-status valid" : "health-status warning"}>
+        {validationState.isValid ? <CheckCircle2 size={17} /> : <AlertTriangle size={17} />}
+        <strong>{validationState.isValid ? "Valid paper" : "Needs attention"}</strong>
       </div>
-    ) : null}
 
-    {validationState.warnings.length > 0 ? (
-      <div className="health-message-list warning">
-        {validationState.warnings.slice(0, 3).map((warning) => (
-          <p key={warning.id}>{warning.label}</p>
-        ))}
+      <div className="health-list">
+        <HealthRow
+          detail={`${validationState.marksSummary.q1ToQ3Total} / ${validationState.marksSummary.q1ToQ3RequiredTotal}`}
+          good={validationState.marksSummary.q1ToQ3Total === validationState.marksSummary.q1ToQ3RequiredTotal}
+          label="Questions 1-3 total"
+        />
+        <HealthRow good={validationState.areaOfStudySummary.isValid} label="Areas of Study" />
+        <HealthRow
+          good={!validationState.blockingErrors.some((error) => error.id.includes("q4"))}
+          label="Question 4"
+        />
+        <HealthRow
+          good={!validationState.blockingErrors.some((error) => error.id.includes("q5"))}
+          label="Question 5"
+        />
+        <HealthRow good={validationState.setWorkSummary.isValid} label="Question 6 options" />
+        <HealthRow detail={audioDetail} good={audioReady} label="Audio readiness" />
+        <HealthRow detail={`${validationState.assetSummary.scoreCount} indicated`} good label="Scores" />
+        <HealthRow
+          detail={validationState.isValid ? "Ready for preview" : "Blocked"}
+          good={validationState.isValid}
+          label="Export readiness"
+        />
       </div>
-    ) : null}
 
-    <div className="marks-breakdown">
-      <h3>Marks Breakdown</h3>
-      <dl>
-        <div>
-          <dt>Q1-3 set work</dt>
-          <dd>{validationState.marksSummary.q1ToQ3Total}/42</dd>
+      {validationState.blockingErrors.length > 0 ? (
+        <div className="health-message-list blocking">
+          {validationState.blockingErrors.map((error) => (
+            <p key={error.id}>{error.label}</p>
+          ))}
         </div>
-        <div>
-          <dt>Q4 dictation</dt>
-          <dd>{validationState.marksSummary.q4Marks}/8</dd>
+      ) : null}
+
+      {validationState.warnings.length > 0 ? (
+        <div className="health-message-list warning">
+          {validationState.warnings.slice(0, 3).map((warning) => (
+            <p key={warning.id}>{warning.label}</p>
+          ))}
         </div>
-        <div>
-          <dt>Q5 unfamiliar</dt>
-          <dd>{validationState.marksSummary.q5Marks}/20</dd>
-        </div>
-        <div>
-          <dt>Q6 essay</dt>
-          <dd>{validationState.marksSummary.q6OptionMarks[0] ?? 0}/30</dd>
-        </div>
-        <div className="total-row">
-          <dt>Total</dt>
-          <dd>{validationState.marksSummary.candidateTotal}</dd>
-        </div>
-      </dl>
-    </div>
-  </aside>
-);
+      ) : null}
+
+      <div className="marks-breakdown">
+        <h3>Marks Breakdown</h3>
+        <dl>
+          <div>
+            <dt>Q1-3 set work</dt>
+            <dd>{validationState.marksSummary.q1ToQ3Total}/42</dd>
+          </div>
+          <div>
+            <dt>Q4 dictation</dt>
+            <dd>{validationState.marksSummary.q4Marks}/8</dd>
+          </div>
+          <div>
+            <dt>Q5 unfamiliar</dt>
+            <dd>{validationState.marksSummary.q5Marks}/20</dd>
+          </div>
+          <div>
+            <dt>Q6 essay</dt>
+            <dd>{validationState.marksSummary.q6OptionMarks[0] ?? 0}/30</dd>
+          </div>
+          <div className="total-row">
+            <dt>Total</dt>
+            <dd>{validationState.marksSummary.candidateTotal}</dd>
+          </div>
+        </dl>
+      </div>
+    </aside>
+  );
+};
 
 const HealthRow = ({ detail, good, label }: { detail?: string; good: boolean; label: string }) => (
   <div className="health-row">

@@ -23,6 +23,19 @@ describe("Edexcel A level Music validation", () => {
     expect(result.setWorkSummary.isValid).toBe(true);
   });
 
+  it("reports missing audio readiness without blocking a structurally valid paper", () => {
+    const result = validate(createInitialPaperDraft());
+
+    expect(result.isValid).toBe(true);
+    expect(result.assetSummary.requiredAudioCount).toBe(5);
+    expect(result.assetSummary.linkedAudioCount).toBe(4);
+    expect(result.assetSummary.missingAudioAssetIds).toHaveLength(4);
+    expect(result.warnings.map((warning) => warning.id)).toEqual(
+      expect.arrayContaining(["missing_audio_files", "missing_audio_metadata_q5_synthetic_unfamiliar_20"]),
+    );
+    expect(result.exportReadiness.isReady).toBe(true);
+  });
+
   it("blocks export when a required slot is empty", () => {
     const draft = createInitialPaperDraft();
     delete draft.selectedQuestionIdsBySlot.q4;

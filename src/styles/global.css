@@ -337,6 +337,8 @@ h3,
 .writer-hero,
 .planned-card,
 .resource-card,
+.audio-summary-card,
+.audio-future-note,
 .bank-card {
   background: var(--surface);
   border: 1px solid #ddd6ca;
@@ -1265,12 +1267,102 @@ textarea.field-control {
   gap: 12px;
 }
 
+.audio-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.audio-summary-card {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 12px;
+  padding: 14px;
+}
+
+.audio-summary-card > svg {
+  color: var(--brand-primary);
+}
+
+.audio-summary-card.warning > svg {
+  color: #895d15;
+}
+
+.audio-summary-card span {
+  color: #6a645a;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.audio-summary-card strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--brand-primary);
+  font-size: 28px;
+  line-height: 1;
+}
+
+.audio-summary-card p {
+  margin-top: 6px;
+}
+
+.audio-future-note {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding: 16px;
+  background: #fbf8f3;
+}
+
+.audio-future-note > svg {
+  color: #895d15;
+}
+
+.audio-future-note p {
+  margin-top: 4px;
+}
+
+.audio-section {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.audio-section h2 {
+  color: var(--brand-primary);
+  font-size: 17px;
+}
+
+.audio-gap-list,
+.linked-audio-questions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.audio-resource-list {
+  gap: 10px;
+}
+
 .resource-card {
   display: grid;
   grid-template-columns: 28px 1fr auto;
   align-items: center;
   gap: 14px;
   padding: 16px;
+}
+
+.audio-card {
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-items: start;
+}
+
+.audio-card.missing {
+  border-color: #e8c990;
 }
 
 .resource-card > svg {
@@ -1298,6 +1390,48 @@ textarea.field-control {
 
 .resource-status.warn {
   color: #895d15;
+}
+
+.audio-card-main {
+  min-width: 0;
+}
+
+.audio-title-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.asset-metadata-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.asset-metadata-list div {
+  padding: 8px;
+  background: #f5f1ea;
+  border: 1px solid #e2dbd0;
+  border-radius: 5px;
+}
+
+.asset-metadata-list dt {
+  color: #6d665c;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.asset-metadata-list dd {
+  margin-top: 3px;
+  overflow-wrap: anywhere;
+}
+
+.asset-source-note {
+  margin-top: 10px;
+  color: #5e594f;
 }
 
 .settings-page {
