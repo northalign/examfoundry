@@ -35,11 +35,14 @@ export const SettingsScreen = ({
           {brandProfiles.map((brandProfile) => (
             <button
               className={brandMode === brandProfile.mode ? "active" : ""}
+              disabled={!brandProfile.enabled}
               key={brandProfile.id}
               onClick={() => onBrandModeChange(brandProfile.mode)}
+              title={brandProfile.enabled ? undefined : "Custom branding is planned for a later version."}
               type="button"
             >
-              {brandProfile.name}
+              <span>{brandProfile.name}</span>
+              {!brandProfile.enabled ? <span className="segmented-note">Planned</span> : null}
             </button>
           ))}
         </div>

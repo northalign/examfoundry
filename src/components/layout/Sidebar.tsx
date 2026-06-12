@@ -31,6 +31,8 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ activeBrand, activeScreen, onScreenChange }: SidebarProps) => {
+  const BrandIcon = activeBrand.mode === "neutral" ? BookOpen : Star;
+
   const renderItem = ({ id, label, icon: Icon }: { id: ScreenId; label: string; icon: typeof FileText }) => (
     <button
       className={activeScreen === id ? "sidebar-item active" : "sidebar-item"}
@@ -46,10 +48,10 @@ export const Sidebar = ({ activeBrand, activeScreen, onScreenChange }: SidebarPr
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
-        <div className="crest-mark" aria-hidden="true">
-          <Star size={18} fill="currentColor" />
+        <div className={`crest-mark ${activeBrand.mode}`} aria-hidden="true">
+          <BrandIcon size={18} fill={activeBrand.mode === "stonyhurst" ? "currentColor" : "none"} />
         </div>
-        <span>Exam Foundry</span>
+        <span>{activeBrand.documentHeaderText}</span>
       </div>
 
       <nav className="sidebar-nav" aria-label="Main navigation">

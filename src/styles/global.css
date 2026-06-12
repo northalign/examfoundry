@@ -111,9 +111,13 @@ h3,
   width: 34px;
   height: 34px;
   color: var(--brand-accent);
-  background: rgb(181 137 42 / 12%);
-  border: 1px solid rgb(181 137 42 / 55%);
+  background: rgb(255 255 255 / 8%);
+  border: 1px solid var(--brand-accent);
   border-radius: 5px;
+}
+
+.crest-mark.neutral {
+  background: rgb(255 255 255 / 10%);
 }
 
 .sidebar-nav {
@@ -155,7 +159,7 @@ h3,
 }
 
 .sidebar-item.active {
-  color: #ffda71;
+  color: #fff;
   background: rgb(255 255 255 / 13%);
   border-left-color: var(--brand-accent);
 }
@@ -202,7 +206,7 @@ h3,
   align-items: center;
   min-width: 0;
   gap: 13px;
-  color: #1b2343;
+  color: var(--brand-primary);
 }
 
 .top-title strong {
@@ -1515,7 +1519,11 @@ textarea.field-control {
 }
 
 .segmented-control button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 36px;
+  gap: 7px;
   padding: 0 16px;
   color: #171b2d;
   background: #eeeae2;
@@ -1528,6 +1536,28 @@ textarea.field-control {
   color: #fff;
   background: var(--brand-primary);
   border-color: var(--brand-primary);
+}
+
+.segmented-control button:disabled {
+  color: #8d867a;
+  background: #e6e1d8;
+  border-color: #d6d0c5;
+  opacity: 0.78;
+}
+
+.segmented-note {
+  display: inline-flex;
+  align-items: center;
+  min-height: 18px;
+  padding: 0 6px;
+  color: #777064;
+  background: #f3efe8;
+  border: 1px solid #d6d0c5;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .logo-dropzone {

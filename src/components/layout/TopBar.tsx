@@ -1,18 +1,26 @@
 import { Download, Eye, Save } from "lucide-react";
-import type { BrandMode } from "../../domain/exam/types";
+import { brandProfiles } from "../../domain/branding/brandProfiles";
+import type { BrandMode, BrandProfile } from "../../domain/exam/types";
 
 interface TopBarProps {
+  activeBrand: BrandProfile;
   brandMode: BrandMode;
   draftTitle: string;
   isPaperValid: boolean;
   onBrandModeChange: (brandMode: BrandMode) => void;
 }
 
-export const TopBar = ({ brandMode, draftTitle, isPaperValid, onBrandModeChange }: TopBarProps) => {
+export const TopBar = ({
+  activeBrand,
+  brandMode,
+  draftTitle,
+  isPaperValid,
+  onBrandModeChange,
+}: TopBarProps) => {
   return (
     <header className="top-bar">
       <div className="top-title">
-        <strong>Exam Foundry</strong>
+        <strong>{activeBrand.documentHeaderText}</strong>
         <span className="top-title-divider" />
         <span>
           Project: <b>{draftTitle}</b>
@@ -26,9 +34,11 @@ export const TopBar = ({ brandMode, draftTitle, isPaperValid, onBrandModeChange 
           onChange={(event) => onBrandModeChange(event.target.value as BrandMode)}
           value={brandMode}
         >
-          <option value="stonyhurst">Stonyhurst</option>
-          <option value="neutral">Neutral</option>
-          <option value="custom">Custom</option>
+          {brandProfiles.map((brandProfile) => (
+            <option disabled={!brandProfile.enabled} key={brandProfile.id} value={brandProfile.mode}>
+              {brandProfile.enabled ? brandProfile.name : `${brandProfile.name} (planned)`}
+            </option>
+          ))}
         </select>
         <button className="quiet-button" type="button">
           <Save size={15} />

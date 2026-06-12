@@ -56,7 +56,10 @@ export const App = () => {
       throw new Error("Exam Foundry requires at least one brand profile.");
     }
 
-    return brandProfiles.find((brandProfile) => brandProfile.mode === brandMode) ?? fallbackBrand;
+    return (
+      brandProfiles.find((brandProfile) => brandProfile.mode === brandMode && brandProfile.enabled) ??
+      fallbackBrand
+    );
   }, [brandMode]);
 
   const validationState = useMemo(
@@ -110,15 +113,20 @@ export const App = () => {
   };
 
   const handleBrandModeChange = (nextMode: BrandMode) => {
-    setBrandMode(nextMode);
-    const nextBrand = brandProfiles.find((brandProfile) => brandProfile.mode === nextMode);
-    if (nextBrand) {
-      setDraft((currentDraft) => ({
-        ...currentDraft,
-        brandProfileId: nextBrand.id,
-        updatedAt: new Date().toISOString(),
-      }));
+    const nextBrand = brandProfiles.find(
+      (brandProfile) => brandProfile.mode === nextMode && brandProfile.enabled,
+    );
+
+    if (!nextBrand) {
+      return;
     }
+
+    setBrandMode(nextMode);
+    setDraft((currentDraft) => ({
+      ...currentDraft,
+      brandProfileId: nextBrand.id,
+      updatedAt: new Date().toISOString(),
+    }));
   };
 
   const renderScreen = () => {

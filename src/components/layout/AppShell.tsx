@@ -37,13 +37,14 @@ export const AppShell = ({
       <Sidebar activeBrand={activeBrand} activeScreen={activeScreen} onScreenChange={onScreenChange} />
       <div className="app-frame">
         <TopBar
+          activeBrand={activeBrand}
           brandMode={brandMode}
           draftTitle={draftTitle}
           isPaperValid={isPaperValid}
           onBrandModeChange={onBrandModeChange}
         />
         <div className="breadcrumb-bar">
-          <span>Exam Foundry</span>
+          <span>{activeBrand.documentHeaderText}</span>
           <span className="breadcrumb-divider">/</span>
           <strong>{activeScreenLabel}</strong>
         </div>
