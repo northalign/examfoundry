@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { ScreenId } from "../../app/App";
 import type { BrandMode, BrandProfile } from "../../domain/exam/types";
+import type { ExportPreparationState } from "../../domain/export/exportService";
 import { Sidebar } from "./Sidebar";
 import { TopBar } from "./TopBar";
 
@@ -11,6 +12,7 @@ interface AppShellProps {
   brandMode: BrandMode;
   children: ReactNode;
   draftTitle: string;
+  exportPreparation: ExportPreparationState;
   isPaperValid: boolean;
   onBrandModeChange: (brandMode: BrandMode) => void;
   onScreenChange: (screenId: ScreenId) => void;
@@ -23,6 +25,7 @@ export const AppShell = ({
   brandMode,
   children,
   draftTitle,
+  exportPreparation,
   isPaperValid,
   onBrandModeChange,
   onScreenChange,
@@ -40,6 +43,7 @@ export const AppShell = ({
           activeBrand={activeBrand}
           brandMode={brandMode}
           draftTitle={draftTitle}
+          exportPreparation={exportPreparation}
           isPaperValid={isPaperValid}
           onBrandModeChange={onBrandModeChange}
         />

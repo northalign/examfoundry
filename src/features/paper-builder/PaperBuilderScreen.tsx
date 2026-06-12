@@ -658,6 +658,11 @@ const PaperHealthPanel = ({ validationState }: { validationState: ValidationStat
     validationState.assetSummary.requiredAudioCount === 0
       ? "No audio required"
       : `${availableAudioCount} / ${validationState.assetSummary.requiredAudioCount} available`;
+  const exportReady = validationState.exportReadiness.isReady;
+  const exportReasons = validationState.exportReadiness.reasons;
+  const exportDetail = exportReady
+    ? "Ready"
+    : `${exportReasons.length} blocker${exportReasons.length === 1 ? "" : "s"}`;
 
   return (
     <aside className="paper-health-panel">
@@ -685,17 +690,14 @@ const PaperHealthPanel = ({ validationState }: { validationState: ValidationStat
         <HealthRow good={validationState.setWorkSummary.isValid} label="Question 6 options" />
         <HealthRow detail={audioDetail} good={audioReady} label="Audio readiness" />
         <HealthRow detail={`${validationState.assetSummary.scoreCount} indicated`} good label="Scores" />
-        <HealthRow
-          detail={validationState.isValid ? "Ready for preview" : "Blocked"}
-          good={validationState.isValid}
-          label="Export readiness"
-        />
+        <HealthRow detail={exportDetail} good={exportReady} label="Export readiness" />
       </div>
 
-      {validationState.blockingErrors.length > 0 ? (
+      {exportReasons.length > 0 ? (
         <div className="health-message-list blocking">
-          {validationState.blockingErrors.map((error) => (
-            <p key={error.id}>{error.label}</p>
+          <strong>Export blocked</strong>
+          {exportReasons.map((reason) => (
+            <p key={reason}>{reason}</p>
           ))}
         </div>
       ) : null}

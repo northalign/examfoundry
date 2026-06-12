@@ -233,6 +233,20 @@ h3,
   flex-shrink: 0;
 }
 
+.export-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.export-disabled-reason {
+  max-width: 210px;
+  color: var(--danger);
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
 .brand-select,
 .field-control {
   min-height: 36px;
@@ -761,6 +775,11 @@ textarea.field-control {
   margin-top: 7px;
 }
 
+.health-message-list strong {
+  display: block;
+  margin-bottom: 7px;
+}
+
 .health-message-list.blocking {
   color: var(--danger);
   background: #fff0f2;
@@ -834,6 +853,15 @@ textarea.field-control {
   width: min(760px, calc(100vw - 48px));
   max-height: calc(100vh - 56px);
   overflow: auto;
+  color: #171b2d;
+  background: var(--surface);
+  border: 1px solid #d9d1c5;
+  border-radius: 8px;
+  box-shadow: 0 24px 70px rgb(23 27 45 / 24%);
+}
+
+.export-modal {
+  width: min(560px, calc(100vw - 40px));
   color: #171b2d;
   background: var(--surface);
   border: 1px solid #d9d1c5;
@@ -941,6 +969,62 @@ textarea.field-control {
 .modal-actions > div {
   display: flex;
   gap: 8px;
+}
+
+.export-readiness-summary {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  margin: 18px 20px 0;
+  padding: 14px;
+  border-radius: 6px;
+}
+
+.export-readiness-summary.valid {
+  color: #2e6d43;
+  background: #eff7ef;
+  border: 1px solid #bed8c2;
+}
+
+.export-readiness-summary.warning {
+  color: #895d15;
+  background: #fff7e9;
+  border: 1px solid #e8c990;
+}
+
+.export-readiness-summary p,
+.export-service-note {
+  color: #625e55;
+  font-size: 13px;
+}
+
+.export-reason-list {
+  margin: 12px 20px 0;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.export-reason-list p {
+  margin-top: 6px;
+}
+
+.export-reason-list.ready {
+  color: #2e6d43;
+  background: #eff7ef;
+  border: 1px solid #bed8c2;
+}
+
+.export-reason-list.blocking {
+  color: var(--danger);
+  background: #fff0f2;
+  border: 1px solid #e5b9c0;
+}
+
+.export-reason-list.warning {
+  color: #805611;
+  background: #fff7e9;
+  border: 1px solid #e8cf9f;
 }
 
 .content-panel,

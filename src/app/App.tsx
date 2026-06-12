@@ -15,6 +15,7 @@ import type {
   Question,
   SubQuestion,
 } from "../domain/exam/types";
+import { createExportPreparationState } from "../domain/export/exportService";
 import { validateEdexcelALevelMusicPaper } from "../domain/validation/edexcelALevelMusic";
 import { AudioLibraryScreen } from "../features/audio-library/AudioLibraryScreen";
 import { DataPacksScreen } from "../features/data-packs/DataPacksScreen";
@@ -72,6 +73,7 @@ export const App = () => {
       }),
     [dataPack.assets, dataPack.questions, draft],
   );
+  const exportPreparation = useMemo(() => createExportPreparationState(validationState), [validationState]);
 
   const handleSlotChange = (slotKey: PaperSlotKey, questionId: string) => {
     setDraft((currentDraft) => ({
@@ -178,6 +180,7 @@ export const App = () => {
       activeScreenLabel={screenLabels[activeScreen]}
       brandMode={brandMode}
       draftTitle={draft.title}
+      exportPreparation={exportPreparation}
       isPaperValid={validationState.isValid}
       onBrandModeChange={handleBrandModeChange}
       onScreenChange={setActiveScreen}
